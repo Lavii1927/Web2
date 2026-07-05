@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Tafheem's Dental, Skin & Hair Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ===================== CSS VARIABLES ===================== */
+:root {
+  --gold: #C9A96E;
+  --gold-light: #E2C99A;
+  --gold-dim: rgba(201,169,110,0.15);
+  --dark-bg: #0A0A0A;
+  --dark-surface: #111111;
+  --dark-card: #171717;
+  --dark-border: rgba(201,169,110,0.18);
+  --light-bg: #F7F3EE;
+  --light-surface: #FFFFFF;
+  --light-card: #F0EBE3;
+  --light-border: rgba(140,100,50,0.15);
+  --text-primary-dark: #F0EBE3;
+  --text-secondary-dark: #9A8A7A;
+  --text-primary-light: #1A1410;
+  --text-secondary-light: #6A5A4A;
+  --radius: 2px;
+  --transition: 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+[data-theme="dark"] {
+  --bg: var(--dark-bg);
+  --surface: var(--dark-surface);
+  --card: var(--dark-card);
+  --border: var(--dark-border);
+  --text: var(--text-primary-dark);
+  --text-muted: var(--text-secondary-dark);
+  --nav-bg: rgba(10,10,10,0.92);
+}
+
+[data-theme="light"] {
+  --bg: var(--light-bg);
+  --surface: var(--light-surface);
+  --card: var(--light-card);
+  --border: var(--light-border);
+  --text: var(--text-primary-light);
+  --text-muted: var(--text-secondary-light);
+  --nav-bg: rgba(247,243,238,0.92);
+}
+
+/* ===================== RESET ===================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+  cursor: none;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* ===================== CUSTOM CURSOR ===================== */
+.cursor-dot {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(201,169,110,0.5);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s ease, width 0.3s, height 0.3s, border-color 0.3s;
+}
+.cursor-ring.hovered { width: 56px; height: 56px; border-color: var(--gold); }
+
+/* ===================== LOADING ===================== */
+#loader {
+  position: fixed; inset: 0;
+  background: #0A0A0A;
+  z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+}
+.loader-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  opacity: 0;
+  animation: loaderFade 0.8s 0.3s forwards;
+}
+.loader-bar-wrap {
+  width: 200px; height: 1px;
+  background: rgba(201,169,110,0.2);
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderFade 0.8s 0.5s forwards;
+}
+.loader-bar {
+  height: 100%; width: 0%;
+  background: var(--gold);
+  animation: loadBar 1.8s 0.6s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes loaderFade { to { opacity: 1; } }
+@keyframes loadBar { to { width: 100%; } }
+
+/* ===================== PARTICLES ===================== */
+#particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  animation: particleFloat linear infinite;
+}
+@keyframes particleFloat {
+  0% { opacity: 0; transform: translateY(0) scale(0); }
+  10% { opacity: 0.4; transform: translateY(-10px) scale(1); }
+  90% { opacity: 0.1; }
+  100% { opacity: 0; transform: translateY(-120vh) scale(0.3); }
+}
+
+/* ===================== NAV ===================== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+  transition: background var(--transition);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+}
+.nav-logo span { color: var(--text); font-weight: 300; }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+  height: 1px; background: var(--gold);
+  transform: scaleX(0); transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.theme-toggle {
+  width: 44px; height: 22px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 11px; cursor: pointer;
+  position: relative; transition: all 0.3s;
+}
+.theme-toggle::after {
+  content: ''; position: absolute;
+  top: 3px; left: 3px;
+  width: 14px; height: 14px;
+  border-radius: 50%; background: var(--gold);
+  transition: transform 0.3s;
+}
+[data-theme="light"] .theme-toggle::after { transform: translateX(22px); }
+.btn-nav {
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 9px 22px;
+  border: 1px solid var(--gold);
+  color: var(--gold); background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-nav:hover { background: var(--gold); color: #0A0A0A; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 22px; height: 1px; background: var(--text); transition: all 0.3s; }
+
+/* ===================== HERO ===================== */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 120px 5% 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(201,169,110,0.07) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 40% at 20% 80%, rgba(201,169,110,0.04) 0%, transparent 60%);
+  z-index: 0;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.4; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 700px;
+}
+.hero-eyebrow {
+  font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s 2.2s forwards;
+}
+.hero-eyebrow::before { content: ''; flex: 0 0 32px; height: 1px; background: var(--gold); }
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 300; line-height: 1.08;
+  margin-bottom: 28px;
+  opacity: 0; transform: translateY(30px);
+  animation: fadeUp 0.9s 2.4s forwards;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-subtitle {
+  font-size: 1rem; line-height: 1.8; color: var(--text-muted);
+  max-width: 500px; margin-bottom: 48px;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s 2.6s forwards;
+}
+.hero-actions {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUp 0.8s 2.8s forwards;
+}
+.btn-primary {
+  padding: 15px 40px;
+  background: var(--gold); color: #0A0A0A;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+  position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.15);
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.4s;
+}
+.btn-primary:hover::after { transform: translateX(100%) skewX(-15deg); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.35); }
+.btn-secondary {
+  padding: 15px 40px;
+  background: transparent; color: var(--text);
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid var(--border); cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s;
+}
+.btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+.hero-stats {
+  position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 40px;
+  z-index: 2;
+  opacity: 0; animation: fadeRight 0.8s 3s forwards;
+}
+.stat-item { text-align: right; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem; font-weight: 300; color: var(--gold);
+  line-height: 1;
+}
+.stat-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
+.hero-line {
+  position: absolute; bottom: 0; left: 5%;
+  display: flex; align-items: center; gap: 16px;
+  padding-bottom: 32px; z-index: 2;
+  opacity: 0; animation: fadeUp 0.8s 3.2s forwards;
+}
+.hero-scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); }
+.hero-scroll-text { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); writing-mode: vertical-lr; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeRight { to { opacity: 1; } }
+
+/* ===================== SECTION BASE ===================== */
+section { position: relative; z-index: 1; }
+.section-pad { padding: 120px 5%; }
+.section-header { margin-bottom: 70px; }
+.section-eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 14px;
+}
+.section-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+  line-height: 1.2;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.divider { width: 60px; height: 1px; background: var(--gold); margin-top: 24px; }
+
+/* ===================== ABOUT ===================== */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.about-image-wrap {
+  position: relative; aspect-ratio: 3/4; max-height: 500px;
+}
+.about-image-bg {
+  position: absolute; inset: 16px 0 0 16px;
+  border: 1px solid var(--border); z-index: 0;
+  transition: all var(--transition);
+}
+.about-image-main {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%;
+  background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.about-logo-display {
+  width: 70%; opacity: 0.9;
+  filter: drop-shadow(0 0 40px rgba(201,169,110,0.3));
+}
+.about-badge {
+  position: absolute; bottom: -20px; right: -20px;
+  width: 120px; height: 120px; z-index: 2;
+  background: var(--gold);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+}
+.about-badge-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300; color: #0A0A0A; line-height: 1;
+}
+.about-badge-text { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #0A0A0A; text-align: center; }
+.about-text p { font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); margin-bottom: 20px; }
+.about-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 36px; }
+.highlight-item {
+  padding: 20px;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.highlight-item:hover { border-color: var(--gold); transform: translateY(-3px); }
+.highlight-icon { font-size: 1.4rem; margin-bottom: 10px; }
+.highlight-title { font-size: 0.82rem; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 5px; }
+.highlight-desc { font-size: 0.76rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ===================== SERVICES ===================== */
+.services-bg { background: var(--surface); }
+.services-tabs {
+  display: flex; gap: 2px; margin-bottom: 48px;
+  border-bottom: 1px solid var(--border); padding-bottom: 0;
+}
+.tab-btn {
+  padding: 12px 28px;
+  font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--text-muted); font-family: 'DM Sans', sans-serif;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+  margin-bottom: -1px;
+}
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+.services-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2px;
+}
+.service-card {
+  background: var(--card);
+  padding: 36px 28px;
+  border: 1px solid var(--border);
+  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  position: relative; overflow: hidden;
+  cursor: default;
+}
+.service-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,169,110,0.05), transparent);
+  opacity: 0; transition: opacity 0.4s;
+}
+.service-card:hover::before { opacity: 1; }
+.service-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.service-card:hover .service-num { color: var(--gold); }
+.service-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem; font-weight: 300;
+  color: var(--border); line-height: 1;
+  margin-bottom: 20px; transition: color 0.4s;
+}
+.service-name { font-size: 1rem; font-weight: 500; margin-bottom: 10px; }
+.service-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ===================== TESTIMONIALS ===================== */
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.review-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 32px;
+  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  position: relative;
+}
+.review-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.review-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 16px; }
+.review-text {
+  font-size: 0.88rem; line-height: 1.8; color: var(--text-muted);
+  font-style: italic; margin-bottom: 22px;
+}
+.review-text::before { content: '"'; font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: var(--gold); opacity: 0.3; line-height: 0; vertical-align: -1rem; margin-right: 6px; }
+.review-author {
+  display: flex; align-items: center; gap: 12px;
+  border-top: 1px solid var(--border); padding-top: 18px;
+}
+.review-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--gold-dim); border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; color: var(--gold); font-weight: 500;
+}
+.review-name { font-size: 0.82rem; font-weight: 500; }
+.review-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+.review-rating-badge {
+  position: absolute; top: 24px; right: 24px;
+  background: var(--gold-dim); border: 1px solid var(--border);
+  padding: 4px 10px;
+  font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold);
+}
+
+/* ===================== FAQ ===================== */
+.faq-bg { background: var(--surface); }
+.faq-list { max-width: 760px; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.faq-q {
+  width: 100%; text-align: left;
+  padding: 24px 0;
+  background: transparent; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px;
+  font-size: 0.95rem; color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.3s;
+}
+.faq-q:hover { color: var(--gold); }
+.faq-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: var(--gold); transition: all 0.3s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--gold); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.23,1,0.32,1), padding 0.3s;
+}
+.faq-a-inner {
+  padding: 0 0 24px;
+  font-size: 0.88rem; line-height: 1.85; color: var(--text-muted);
+}
+.faq-item.open .faq-a { max-height: 400px; }
+
+/* ===================== BOOKING ===================== */
+.booking-grid {
+  display: grid; grid-template-columns: 1fr 1.2fr;
+  gap: 80px; align-items: start;
+}
+.booking-info { }
+.booking-contact-items { display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
+.contact-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+.contact-item:hover { border-color: var(--gold); }
+.contact-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--gold-dim); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.contact-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+.contact-val { font-size: 0.9rem; }
+.booking-form { }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 8px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; background: var(--card);
+  border: 1px solid var(--border); color: var(--text);
+  padding: 12px 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  transition: border-color 0.3s;
+  outline: none;
+  -webkit-appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--gold); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group select option { background: var(--card); }
+.form-submit {
+  width: 100%; padding: 16px;
+  background: var(--gold); color: #0A0A0A;
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+  margin-top: 8px;
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.form-submit:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,169,110,0.3); }
+.form-success {
+  display: none; text-align: center; padding: 40px 20px;
+  font-size: 0.95rem; color: var(--gold);
+}
+.form-success .success-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+/* ===================== ARTICLES ===================== */
+.articles-bg { background: var(--surface); }
+.articles-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+}
+.article-card {
+  background: var(--card); border: 1px solid var(--border);
+  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  cursor: pointer; overflow: hidden;
+}
+.article-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.article-img {
+  height: 200px; background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.article-img-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, var(--gold-dim), transparent);
+}
+.article-body { padding: 28px; }
+.article-tag {
+  font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.article-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; line-height: 1.4; margin-bottom: 12px; }
+.article-excerpt { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+.article-footer { padding: 0 28px 24px; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ===================== EMERGENCY ===================== */
+.emergency-section {
+  padding: 80px 5%;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 40px; flex-wrap: wrap;
+}
+.emergency-text h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 300;
+  color: #0A0A0A; line-height: 1.2;
+}
+.emergency-text p { font-size: 0.88rem; color: rgba(10,10,10,0.7); margin-top: 8px; }
+.emergency-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-emergency {
+  padding: 14px 32px;
+  background: #0A0A0A; color: var(--gold);
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: all 0.3s;
+}
+.btn-emergency:hover { background: #1A1A1A; transform: translateY(-2px); }
+.btn-emergency-outline {
+  padding: 14px 32px;
+  background: transparent; color: #0A0A0A;
+  border: 1px solid rgba(10,10,10,0.3); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: all 0.3s;
+}
+.btn-emergency-outline:hover { background: rgba(0,0,0,0.08); }
+
+/* ===================== FOOTER ===================== */
+footer {
+  padding: 80px 5% 40px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px; margin-bottom: 60px;
+}
+.footer-brand .brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300; color: var(--gold); margin-bottom: 16px;
+}
+.footer-brand p { font-size: 0.83rem; line-height: 1.8; color: var(--text-muted); max-width: 280px; }
+.footer-title { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 0.85rem; color: var(--text-muted); transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-bottom {
+  border-top: 1px solid var(--border); padding-top: 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.75rem; color: var(--text-muted);
+}
+.footer-socials { display: flex; gap: 12px; }
+.social-link {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; color: var(--text-muted);
+  transition: all 0.3s;
+}
+.social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ===================== FLOATING BUTTONS ===================== */
+.float-whatsapp {
+  position: fixed; bottom: 28px; right: 28px; z-index: 800;
+  width: 56px; height: 56px;
+  background: #25D366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 24px rgba(37,211,102,0.4);
+  transition: all 0.3s; cursor: pointer;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+.float-whatsapp:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,211,102,0.5); }
+.float-whatsapp-ring {
+  position: absolute; inset: -6px;
+  border: 2px solid rgba(37,211,102,0.3); border-radius: 50%;
+  animation: waPulse 2s ease-out infinite;
+}
+@keyframes waPulse {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.float-call {
+  position: fixed; bottom: 28px; left: 28px; z-index: 800;
+  width: 56px; height: 56px;
+  background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 24px rgba(201,169,110,0.4);
+  font-size: 1.3rem; transition: all 0.3s; cursor: pointer;
+  text-decoration: none;
+}
+.float-call:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(201,169,110,0.5); }
+
+/* ===================== AI CHATBOT ===================== */
+.chat-bubble {
+  position: fixed; bottom: 96px; right: 28px; z-index: 800;
+  width: 52px; height: 52px;
+  background: var(--card); border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.2rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.chat-bubble:hover { transform: scale(1.1); background: var(--gold-dim); }
+.chat-window {
+  position: fixed; bottom: 160px; right: 28px; z-index: 800;
+  width: 340px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  display: none; flex-direction: column;
+  max-height: 480px;
+  animation: chatOpen 0.35s cubic-bezier(0.23,1,0.32,1);
+}
+.chat-window.open { display: flex; }
+@keyframes chatOpen {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chat-header {
+  padding: 16px 20px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.chat-header-info { display: flex; align-items: center; gap: 10px; }
+.chat-avatar { width: 32px; height: 32px; background: rgba(10,10,10,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+.chat-header-text .chat-name { font-size: 0.85rem; font-weight: 500; color: #0A0A0A; }
+.chat-header-text .chat-status { font-size: 0.68rem; color: rgba(10,10,10,0.6); }
+.chat-close { background: none; border: none; cursor: pointer; font-size: 1rem; color: #0A0A0A; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.chat-msg {
+  max-width: 80%; padding: 10px 14px;
+  font-size: 0.83rem; line-height: 1.55;
+}
+.chat-msg.bot { background: var(--card); border: 1px solid var(--border); color: var(--text); align-self: flex-start; border-radius: 0 8px 8px 8px; }
+.chat-msg.user { background: var(--gold); color: #0A0A0A; align-self: flex-end; border-radius: 8px 0 8px 8px; }
+.chat-typing { align-self: flex-start; display: flex; gap: 4px; padding: 12px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 0 8px 8px 8px; }
+.chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); animation: typing 1.2s infinite; }
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
+.chat-input-wrap { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+.chat-input {
+  flex: 1; background: var(--card); border: 1px solid var(--border);
+  color: var(--text); padding: 8px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+  outline: none;
+}
+.chat-input:focus { border-color: var(--gold); }
+.chat-send {
+  width: 36px; height: 36px; background: var(--gold); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+.chat-send:hover { opacity: 0.85; }
+.chat-quick-btns { padding: 0 16px 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+.quick-btn {
+  padding: 5px 12px; background: var(--gold-dim); border: 1px solid var(--border);
+  color: var(--gold); font-size: 0.72rem; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.quick-btn:hover { background: var(--gold); color: #0A0A0A; border-color: var(--gold); }
+
+/* ===================== SCROLL REVEAL ===================== */
+.reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ===================== MOBILE NAV ===================== */
+.mobile-menu {
+  position: fixed; inset: 0; background: var(--bg);
+  z-index: 990; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px; opacity: 0; pointer-events: none;
+  transition: opacity 0.4s;
+}
+.mobile-menu.open { opacity: 1; pointer-events: all; }
+.mobile-menu a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300; color: var(--text-muted);
+  transition: color 0.3s;
+}
+.mobile-menu a:hover { color: var(--gold); }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1024px) {
+  .hero-stats { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-image-wrap { max-height: 320px; aspect-ratio: auto; }
+  .booking-grid { grid-template-columns: 1fr; gap: 48px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .btn-nav { display: none; }
+  .hamburger { display: flex; }
+  .section-pad { padding: 80px 5%; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .emergency-section { flex-direction: column; }
+  .chat-window { width: calc(100vw - 40px); right: 20px; }
+}
+@media (max-width: 480px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">Dr. Tafheem's</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#reviews" onclick="closeMobile()">Reviews</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#articles" onclick="closeMobile()">Articles</a>
+  <a href="#booking" onclick="closeMobile()">Book Appointment</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Dr. Tafheem's <span>Dental Â· Skin Â· Hair</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#articles">Articles</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="theme-toggle" id="themeToggle" title="Toggle theme"></div>
+    <button class="btn-nav" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Goregaon West, Mumbai</div>
+    <h1 class="hero-title">
+      Where Dental<br><em>Artistry</em> Meets<br>Skin Wellness
+    </h1>
+    <p class="hero-subtitle">A premium multi-specialty clinic offering world-class dental, skin, and hair treatments â€” with a signature zero-pain philosophy and care that feels personal.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Appointment</button>
+      <button class="btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore Services</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Happy Patients</div></div>
+    <div class="stat-item"><div class="stat-num">5â˜…</div><div class="stat-label">Google Rating</div></div>
+    <div class="stat-item"><div class="stat-num">3+</div><div class="stat-label">Specialties</div></div>
+  </div>
+  <div class="hero-line">
+    <div class="hero-scroll-line"></div>
+    <div class="hero-scroll-text">Scroll</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section-pad" id="about">
+  <div class="about-grid">
+    <div class="about-image-wrap reveal">
+      <div class="about-image-bg"></div>
+      <div class="about-image-main">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect fill='%23171717' width='300' height='200'/%3E%3Ccircle cx='150' cy='80' r='55' fill='none' stroke='%23C9A96E' stroke-width='1.5' opacity='0.6'/%3E%3Cpath d='M120,90 Q150,55 180,90 Q165,130 150,145 Q135,130 120,90Z' fill='none' stroke='%23C9A96E' stroke-width='1.5' opacity='0.5'/%3E%3Cpath d='M130,75 Q150,60 170,75' fill='none' stroke='%23C9A96E' stroke-width='1' opacity='0.4'/%3E%3Cellipse cx='155' cy='70' rx='12' ry='16' fill='none' stroke='%23C9A96E' stroke-width='0.8' opacity='0.35'/%3E%3Ctext x='150' y='175' font-family='serif' font-size='11' fill='%23C9A96E' text-anchor='middle' opacity='0.7' letter-spacing='2'>DR. TAFHEEM'S%3C/text%3E%3C/svg%3E"
+             alt="Dr Tafheem's Clinic" style="width:80%; opacity:0.85;" class="about-logo-display">
+      </div>
+      <div class="about-badge">
+        <div class="about-badge-num">5â˜…</div>
+        <div class="about-badge-text">Google Reviews</div>
+      </div>
+    </div>
+    <div class="about-text reveal reveal-delay-2">
+      <div class="section-header" style="margin-bottom:28px">
+        <div class="section-eyebrow">About the Clinic</div>
+        <h2 class="section-title">Crafting Smiles &<br><em>Elevating Confidence</em></h2>
+        <div class="divider"></div>
+      </div>
+      <p>Dr. Tafheem's Dental, Skin & Hair Clinic is a multi-specialty practice rooted in one philosophy â€” exceptional care with zero pain. Led by Dr. Tafheem, our clinic has earned the trust of hundreds of patients across Mumbai through precision, patience, and a genuinely personal approach.</p>
+      <p>From advanced dental procedures to cutting-edge skin and hair therapies, every treatment is performed with the highest standards of sterilization, modern equipment, and a deep respect for your comfort and well-being.</p>
+      <div class="about-highlights">
+        <div class="highlight-item">
+          <div class="highlight-icon">ðŸ¦·</div>
+          <div class="highlight-title">Zero Pain Dentistry</div>
+          <div class="highlight-desc">Every procedure designed to be comfortable and stress-free from start to finish.</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">âœ¨</div>
+          <div class="highlight-title">Premium Skin Care</div>
+          <div class="highlight-desc">Advanced skin treatments using medical-grade technology and protocols.</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">ðŸ’Ž</div>
+          <div class="highlight-title">Sterile Environment</div>
+          <div class="highlight-desc">High-standard sterilization and quality equipment for complete safety.</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">ðŸŒ¿</div>
+          <div class="highlight-title">Holistic Approach</div>
+          <div class="highlight-desc">Treating the whole person â€” dental health, skin glow, and hair vitality.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-bg section-pad" id="services">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">What We Offer</div>
+    <h2 class="section-title">Our <em>Specialties</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="services-tabs reveal">
+    <button class="tab-btn active" onclick="switchTab('dental', this)">ðŸ¦· Dental</button>
+    <button class="tab-btn" onclick="switchTab('skin', this)">âœ¨ Skin</button>
+    <button class="tab-btn" onclick="switchTab('hair', this)">ðŸ’† Hair</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-dental">
+    <div class="services-grid">
+      <div class="service-card reveal"><div class="service-num">01</div><div class="service-name">Root Canal Treatment</div><div class="service-desc">Precise, pain-free root canal procedures to relieve toothache and save your natural tooth.</div></div>
+      <div class="service-card reveal reveal-delay-1"><div class="service-num">02</div><div class="service-name">Braces & Orthodontics</div><div class="service-desc">Metal, ceramic, and clear aligner braces to give you a perfectly aligned, confident smile.</div></div>
+      <div class="service-card reveal reveal-delay-2"><div class="service-num">03</div><div class="service-name">Dental Implants</div><div class="service-desc">Permanent, natural-looking tooth replacements that restore function and aesthetics.</div></div>
+      <div class="service-card reveal reveal-delay-3"><div class="service-num">04</div><div class="service-name">Smile Design & Veneers</div><div class="service-desc">Custom porcelain veneers and smile makeovers tailored to your facial features.</div></div>
+      <div class="service-card reveal"><div class="service-num">05</div><div class="service-name">Tooth Extraction</div><div class="service-desc">Gentle, anxiety-free extractions performed with utmost care and precision.</div></div>
+      <div class="service-card reveal reveal-delay-1"><div class="service-num">06</div><div class="service-name">Teeth Whitening</div><div class="service-desc">Professional in-clinic whitening to brighten your smile by several shades safely.</div></div>
+      <div class="service-card reveal reveal-delay-2"><div class="service-num">07</div><div class="service-name">Ceramic Crowns & Caps</div><div class="service-desc">High-quality ceramic restorations that match your natural teeth in color and strength.</div></div>
+      <div class="service-card reveal reveal-delay-3"><div class="service-num">08</div><div class="service-name">Scaling & Cleaning</div><div class="service-desc">Deep cleaning and scaling to remove plaque, prevent gum disease, and refresh your mouth.</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-skin">
+    <div class="services-grid">
+      <div class="service-card reveal"><div class="service-num">01</div><div class="service-name">HydraFacial</div><div class="service-desc">Deep cleansing, exfoliation, and hydration in one signature treatment for glowing skin.</div></div>
+      <div class="service-card reveal reveal-delay-1"><div class="service-num">02</div><div class="service-name">Carbon Facial (Laser)</div><div class="service-desc">Carbon peel laser to remove dead cells, unclog pores, and rejuvenate the complexion.</div></div>
+      <div class="service-card reveal reveal-delay-2"><div class="service-num">03</div><div class="service-name">Tan Removal</div><div class="service-desc">Targeted treatments to eliminate sun tan and restore your skin's natural radiance.</div></div>
+      <div class="service-card reveal reveal-delay-3"><div class="service-num">04</div><div class="service-name">Tattoo Removal</div><div class="service-desc">Safe, effective laser tattoo removal with minimal downtime and excellent results.</div></div>
+      <div class="service-card reveal"><div class="service-num">05</div><div class="service-name">Laser Hair Removal</div><div class="service-desc">Long-lasting hair reduction using advanced laser technology for smooth, clear skin.</div></div>
+      <div class="service-card reveal reveal-delay-1"><div class="service-num">06</div><div class="service-name">PRP Therapy</div><div class="service-desc">Platelet-rich plasma treatments for skin rejuvenation and natural anti-aging effects.</div></div>
+      <div class="service-card reveal reveal-delay-2"><div class="service-num">07</div><div class="service-name">Anti-Acne Treatments</div><div class="service-desc">Medically backed protocols to treat active acne and reduce scarring effectively.</div></div>
+      <div class="service-card reveal reveal-delay-3"><div class="service-num">08</div><div class="service-name">Chemical Peels</div><div class="service-desc">Customized peels for pigmentation, dullness, and uneven skin texture correction.</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-hair">
+    <div class="services-grid">
+      <div class="service-card reveal"><div class="service-num">01</div><div class="service-name">Hair Fall Treatment</div><div class="service-desc">Comprehensive hair loss analysis and targeted treatments to stop hair fall and promote regrowth.</div></div>
+      <div class="service-card reveal reveal-delay-1"><div class="service-num">02</div><div class="service-name">PRP for Hair</div><div class="service-desc">Platelet-rich plasma injections to stimulate dormant hair follicles and restore density.</div></div>
+      <div class="service-card reveal reveal-delay-2"><div class="service-num">03</div><div class="service-name">Scalp Treatment</div><div class="service-desc">Specialized scalp care to address dandruff, dryness, and scalp health issues.</div></div>
+      <div class="service-card reveal reveal-delay-3"><div class="service-num">04</div><div class="service-name">Mesotherapy</div><div class="service-desc">Micro-injection therapy delivering vitamins and nutrients directly to the hair roots.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section-pad" id="reviews">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Patient Stories</div>
+    <h2 class="section-title">What Our <em>Patients Say</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="review-rating-badge">5.0 â˜…</div>
+      <div class="review-stars">â˜…â˜…â˜…â˜…â˜…</div>
+      <div class="review-text">I had a wonderful experience with my braces treatment, especially because of Dr. Tafheem. The doctor is very kind, patient, and highly professional. Every procedure was explained clearly, which made me feel comfortable and confident.</div>
+      <div class="review-author">
+        <div class="review-avatar">S</div>
+        <div><div class="review-name">Soniya Pandey</div><div class="review-time">2 months ago</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-1">
+      <div class="review-rating-badge">5.0 â˜…</div>
+      <div class="review-stars">â˜…â˜…â˜…â˜…â˜…</div>
+      <div class="review-text">I had a great experience at this clinic. The entire process was incredibly smooth from start to finish. Dr. Tafheem was professional and did an excellent job â€” I am very happy with the results. Highly recommend!</div>
+      <div class="review-author">
+        <div class="review-avatar">J</div>
+        <div><div class="review-name">Jay Makhija</div><div class="review-time">3 months ago</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-2">
+      <div class="review-rating-badge">5.0 â˜…</div>
+      <div class="review-stars">â˜…â˜…â˜…â˜…â˜…</div>
+      <div class="review-text">Amazing experience with Dr. Tafheem. She did my tooth extraction very smoothly with zero pain and again I did my tooth filling without any problem. She is very good at it and sweet. Thanks!</div>
+      <div class="review-author">
+        <div class="review-avatar">N</div>
+        <div><div class="review-name">Nisha Naidu</div><div class="review-time">7 months ago Â· Local Guide</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-rating-badge">5.0 â˜…</div>
+      <div class="review-stars">â˜…â˜…â˜…â˜…â˜…</div>
+      <div class="review-text">I don't usually write reviews, but my experience with Dr. Tafheem at Zero Pain Dentist genuinely deserves recognition. Finding a dentist who is both highly skilled and genuinely caring is rare â€” Dr. Tafheem is that rare gem.</div>
+      <div class="review-author">
+        <div class="review-avatar">S</div>
+        <div><div class="review-name">Sandeep Gupta</div><div class="review-time">10 months ago</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-1">
+      <div class="review-rating-badge">5.0 â˜…</div>
+      <div class="review-stars">â˜…â˜…â˜…â˜…â˜…</div>
+      <div class="review-text">Dr. Tafheem is one of the most hands-on and approachable dentists I've come across. She did my root canal and ceramic cap, and it was genuinely a zero-pain experience. Highly recommend!</div>
+      <div class="review-author">
+        <div class="review-avatar">A</div>
+        <div><div class="review-name">Ashna Srivastava</div><div class="review-time">10 months ago Â· Local Guide</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal reveal-delay-2">
+      <div class="review-rating-badge">5.0 â˜…</div>
+      <div class="review-stars">â˜…â˜…â˜…â˜…â˜…</div>
+      <div class="review-text">Best service by Dr. Tafheem â€” I had my smile design done by veneers. I just love my new smile makeover. Thanks, Doc!</div>
+      <div class="review-author">
+        <div class="review-avatar">R</div>
+        <div><div class="review-name">Rashma Qureshi</div><div class="review-time">4 months ago</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-bg section-pad" id="faq">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Questions Answered</div>
+    <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is the treatment really pain-free? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes â€” our clinic is built around a zero-pain philosophy. We use advanced local anesthesia techniques and take time to ensure you're completely comfortable before any procedure begins. Hundreds of patients have experienced painless extractions, root canals, and implants here.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How do I book an appointment? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">You can book directly on this website using our online booking form, call us at 099209 09273, or message us on WhatsApp at the same number. We'll confirm your slot and send a reminder before your visit.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What types of braces are available? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">We offer metal braces, ceramic (tooth-colored) braces, and clear aligners. During your consultation, Dr. Tafheem will evaluate your teeth and recommend the most suitable option based on your dental needs and lifestyle preferences.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How many sessions does laser hair removal require? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Most patients require 6â€“8 sessions for optimal results, spaced 4â€“6 weeks apart. The number can vary based on skin type, hair thickness, and the area being treated. A consultation will give you a more precise estimate.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do you offer EMI or payment plans? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Yes, we understand that some treatments are significant investments. We work to accommodate various payment methods and can discuss convenient payment plans during your consultation for select procedures.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What hygiene standards does the clinic maintain? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">We maintain the highest standard of sterilization. All instruments are autoclaved, single-use materials are discarded after each patient, and the clinic environment is regularly sanitized. Your safety is our non-negotiable priority.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Where is the clinic located? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">We are located at Dlh Udaaka Heights, Beside Tata Power Office, Namah Medical, Off SV Road, Ram Mandir Signal, Siddharth Nagar, Road Number 6, Prabhodhan Marg, Goregaon West, Mumbai, Maharashtra 400104. We are easily accessible by road and public transport.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section class="articles-bg section-pad" id="articles">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Wellness Knowledge</div>
+    <h2 class="section-title">From Our <em>Journal</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="articles-grid">
+    <div class="article-card reveal">
+      <div class="article-img"><div class="article-img-bg"></div>ðŸ¦·</div>
+      <div class="article-body">
+        <div class="article-tag">Dental Care</div>
+        <div class="article-title">The Truth About Root Canals â€” Why They're Not as Scary as You Think</div>
+        <div class="article-excerpt">Modern root canal treatment is virtually painless. Here's what actually happens during the procedure and why you shouldn't fear it.</div>
+      </div>
+      <div class="article-footer">5 min read Â· Dr. Tafheem</div>
+    </div>
+    <div class="article-card reveal reveal-delay-1">
+      <div class="article-img"><div class="article-img-bg"></div>âœ¨</div>
+      <div class="article-body">
+        <div class="article-tag">Skin Wellness</div>
+        <div class="article-title">HydraFacial vs Regular Facial â€” What's the Difference?</div>
+        <div class="article-excerpt">Both promise glowing skin, but only one delivers medically backed hydration and extraction at a cellular level. We break it down.</div>
+      </div>
+      <div class="article-footer">4 min read Â· Skin Team</div>
+    </div>
+    <div class="article-card reveal reveal-delay-2">
+      <div class="article-img"><div class="article-img-bg"></div>ðŸ’†</div>
+      <div class="article-body">
+        <div class="article-tag">Hair Health</div>
+        <div class="article-title">Understanding Hair Fall â€” When to See a Doctor</div>
+        <div class="article-excerpt">Losing 50â€“100 hairs a day is normal. Anything beyond that could be a sign of something treatable. Here's what to look out for.</div>
+      </div>
+      <div class="article-footer">6 min read Â· Hair Team</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="section-pad" id="booking">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Reserve Your Visit</div>
+    <h2 class="section-title">Book an <em>Appointment</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="booking-grid">
+    <div class="booking-info reveal">
+      <p style="font-size:0.9rem;line-height:1.9;color:var(--text-muted);margin-bottom:8px;">We're here to make your experience seamless. Fill in the form or reach out directly â€” our team will confirm your appointment within a few hours.</p>
+      <div class="booking-contact-items">
+        <div class="contact-item">
+          <div class="contact-icon">ðŸ“</div>
+          <div>
+            <div class="contact-label">Clinic Address</div>
+            <div class="contact-val">Dlh Udaaka Heights, Beside Tata Power Office, Off SV Rd, Goregaon West, Mumbai 400104</div>
+          </div>
+        </div>
+        <a href="tel:09920909273" class="contact-item" style="cursor:pointer">
+          <div class="contact-icon">ðŸ“ž</div>
+          <div>
+            <div class="contact-label">Phone / WhatsApp</div>
+            <div class="contact-val">099209 09273</div>
+          </div>
+        </a>
+        <a href="mailto:drtafheemahmed@gmail.com" class="contact-item" style="cursor:pointer">
+          <div class="contact-icon">âœ‰ï¸</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val">drtafheemahmed@gmail.com</div>
+          </div>
+        </a>
+        <div class="contact-item">
+          <div class="contact-icon">ðŸ•</div>
+          <div>
+            <div class="contact-label">Clinic Hours</div>
+            <div class="contact-val">Monâ€“Sat: 10:00 AM â€“ 8:00 PM<br>Sun: By appointment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="booking-form reveal reveal-delay-2">
+      <div id="bookingFormWrap">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="fphone" placeholder="+91 00000 00000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="femail" placeholder="you@email.com">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Service Category</label>
+            <select id="fservice">
+              <option value="">Select...</option>
+              <option>Dental â€” Root Canal</option>
+              <option>Dental â€” Braces</option>
+              <option>Dental â€” Implant</option>
+              <option>Dental â€” Veneers / Smile Design</option>
+              <option>Dental â€” Extraction</option>
+              <option>Dental â€” General Checkup</option>
+              <option>Skin â€” HydraFacial</option>
+              <option>Skin â€” Laser Hair Removal</option>
+              <option>Skin â€” Tan / Tattoo Removal</option>
+              <option>Skin â€” PRP</option>
+              <option>Hair â€” Hair Fall Treatment</option>
+              <option>Hair â€” PRP for Hair</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Preferred Date</label>
+            <input type="date" id="fdate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Message (optional)</label>
+          <textarea id="fmessage" placeholder="Describe your concern or any questions..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitBooking()">Request Appointment â†’</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">âœ…</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:8px;">Appointment Requested</div>
+        <p style="font-size:0.85rem;color:var(--text-muted);">Thank you! Our team will reach out within a few hours to confirm your slot. Check your phone or email.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMERGENCY -->
+<div class="emergency-section">
+  <div class="emergency-text">
+    <h2>Dental Emergency?<br>We're Here for You.</h2>
+    <p>Severe pain, broken tooth, or swelling â€” call us immediately. We prioritize emergency cases.</p>
+  </div>
+  <div class="emergency-actions">
+    <a href="tel:09920909273"><button class="btn-emergency">ðŸ“ž Call Now</button></a>
+    <a href="https://wa.me/919920909273" target="_blank"><button class="btn-emergency-outline">ðŸ’¬ WhatsApp</button></a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name">Dr. Tafheem's</div>
+      <p>Dental, Skin & Hair Clinic â€” a premium multi-specialty practice committed to your complete well-being, guided by the zero-pain philosophy.</p>
+      <div class="footer-socials" style="margin-top:24px">
+        <a href="#" class="social-link">in</a>
+        <a href="#" class="social-link">ig</a>
+        <a href="https://wa.me/919920909273" class="social-link" target="_blank">wa</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Dental Treatments</a></li>
+        <li><a href="#services">Skin Treatments</a></li>
+        <li><a href="#services">Hair Treatments</a></li>
+        <li><a href="#services">Smile Design</a></li>
+        <li><a href="#services">Implants</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#articles">Articles</a></li>
+        <li><a href="#booking">Book Appointment</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="tel:09920909273">099209 09273</a></li>
+        <li><a href="mailto:drtafheemahmed@gmail.com">drtafheemahmed@gmail.com</a></li>
+        <li><a href="#">Goregaon West, Mumbai</a></li>
+        <li><a href="#">400104, Maharashtra</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Â© 2026 Dr. Tafheem's Dental, Skin & Hair Clinic. All rights reserved.</span>
+    <span>Crafted with care â™¥</span>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<a href="https://wa.me/919920909273" target="_blank" class="float-whatsapp" title="Chat on WhatsApp">
+  <div class="float-whatsapp-ring"></div>
+  ðŸ’¬
+</a>
+<a href="tel:09920909273" class="float-call" title="Call Us">ðŸ“ž</a>
+
+<!-- AI CHATBOT -->
+<div class="chat-bubble" id="chatBubble" onclick="toggleChat()" title="Chat with AI Assistant">ðŸ¤–</div>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="chat-avatar">ðŸ¦·</div>
+      <div class="chat-header-text">
+        <div class="chat-name">Dr. Tafheem's Assistant</div>
+        <div class="chat-status">AI-powered Â· Online</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">âœ•</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">Hello! ðŸ‘‹ I'm the AI assistant for Dr. Tafheem's Clinic. How can I help you today?</div>
+  </div>
+  <div class="chat-quick-btns" id="quickBtns">
+    <button class="quick-btn" onclick="quickAsk('Book an appointment')">Book Appointment</button>
+    <button class="quick-btn" onclick="quickAsk('What dental services do you offer?')">Dental Services</button>
+    <button class="quick-btn" onclick="quickAsk('Tell me about skin treatments')">Skin Treatments</button>
+    <button class="quick-btn" onclick="quickAsk('Where is the clinic located?')">Location</button>
+  </div>
+  <div class="chat-input-wrap">
+    <input class="chat-input" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">â†’</button>
+  </div>
+</div>
+
+<script>
+// ===================== LOADER =====================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.style.opacity = '0';
+    loader.style.transition = 'opacity 0.6s';
+    setTimeout(() => loader.style.display = 'none', 600);
+  }, 2400);
+});
+
+// ===================== THEME =====================
+const toggle = document.getElementById('themeToggle');
+toggle.addEventListener('click', () => {
+  const html = document.documentElement;
+  html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+});
+
+// ===================== CURSOR =====================
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+(function animCursor() { rx += (mx-rx)*0.12; ry += (my-ry)*0.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(animCursor); })();
+document.querySelectorAll('a,button,.service-card,.review-card,.article-card,.faq-q').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+});
+
+// ===================== PARTICLES =====================
+const particleContainer = document.getElementById('particles');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 3 + 1;
+  p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:${-10}px;animation-duration:${8+Math.random()*14}s;animation-delay:${Math.random()*12}s;opacity:0;`;
+  particleContainer.appendChild(p);
+}
+
+// ===================== SCROLL REVEAL =====================
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// ===================== SERVICE TABS =====================
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  document.querySelectorAll('#tab-' + id + ' .reveal').forEach(el => el.classList.add('visible'));
+}
+
+// ===================== FAQ =====================
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ===================== MOBILE MENU =====================
+function toggleMobile() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// ===================== BOOKING FORM =====================
+function submitBooking() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  if (!name || !phone) { alert('Please fill in your name and phone number.'); return; }
+  document.getElementById('bookingFormWrap').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ===================== AI CHATBOT =====================
+function toggleChat() {
+  const w = document.getElementById('chatWindow');
+  w.classList.toggle('open');
+}
+
+const clinicKnowledge = {
+  greet: ["Hello!", "Hi there!", "Hey!"],
+  booking: "You can book an appointment by calling 099209 09273, WhatsApp-ing the same number, or filling out our online booking form above. We'll confirm within a few hours!",
+  location: "We're located at Dlh Udaaka Heights, Beside Tata Power Office, Off SV Road, Ram Mandir Signal, Goregaon West, Mumbai 400104.",
+  dental: "We offer a full range of dental services: Root Canal Treatment, Braces & Orthodontics, Dental Implants, Smile Design & Veneers, Tooth Extraction, Teeth Whitening, Ceramic Crowns, and Scaling & Cleaning.",
+  skin: "Our skin services include HydraFacial, Carbon Laser Facial, Tan Removal, Tattoo Removal, Laser Hair Removal, PRP Therapy, Anti-Acne Treatments, and Chemical Peels.",
+  hair: "We offer Hair Fall Treatment, PRP for Hair, Scalp Treatment, and Mesotherapy for hair health and regrowth.",
+  pain: "Absolutely! Our clinic is built on a zero-pain philosophy. Dr. Tafheem uses advanced techniques to ensure every procedure is as comfortable as possible. Many patients are surprised by how painless their treatments are!",
+  doctor: "Dr. Tafheem is a highly skilled, caring, and approachable dental and aesthetic specialist. She is known for her gentle approach, clear communication, and exceptional results.",
+  hours: "Our clinic is open Monday to Saturday, 10:00 AM to 8:00 PM. Sundays are by appointment only.",
+  cost: "Treatment costs vary based on the procedure. We offer competitive, transparent pricing. Please call or visit for a personalized consultation and quote.",
+  emergency: "For dental emergencies, please call us immediately at 099209 09273. We prioritize emergency cases and will do our best to see you as soon as possible.",
+  default: "That's a great question! For specific inquiries, I'd recommend calling or WhatsApp-ing us at 099209 09273 or emailing drtafheemahmed@gmail.com. Our team will be happy to assist you!"
+};
+
+function getReply(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('book') || m.includes('appoint')) return clinicKnowledge.booking;
+  if (m.includes('location') || m.includes('address') || m.includes('where')) return clinicKnowledge.location;
+  if (m.includes('dental') || m.includes('tooth') || m.includes('teeth') || m.includes('braces') || m.includes('implant') || m.includes('root canal')) return clinicKnowledge.dental;
+  if (m.includes('skin') || m.includes('facial') || m.includes('hydra') || m.includes('laser') || m.includes('tan') || m.includes('tattoo')) return clinicKnowledge.skin;
+  if (m.includes('hair') || m.includes('hairfall') || m.includes('prp')) return clinicKnowledge.hair;
+  if (m.includes('pain') || m.includes('hurt') || m.includes('painful') || m.includes('scared') || m.includes('nervous')) return clinicKnowledge.pain;
+  if (m.includes('doctor') || m.includes('dr') || m.includes('tafheem')) return clinicKnowledge.doctor;
+  if (m.includes('time') || m.includes('hour') || m.includes('open') || m.includes('timing')) return clinicKnowledge.hours;
+  if (m.includes('cost') || m.includes('price') || m.includes('fee') || m.includes('charge') || m.includes('how much')) return clinicKnowledge.cost;
+  if (m.includes('emergency') || m.includes('urgent') || m.includes('pain now') || m.includes('severe')) return clinicKnowledge.emergency;
+  if (m.includes('hello') || m.includes('hi') || m.includes('hey') || m.includes('good')) return "Hi there! ðŸ˜Š Welcome to Dr. Tafheem's Clinic assistant. How can I help you today?";
+  return clinicKnowledge.default;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  document.getElementById('quickBtns').style.display = 'none';
+
+  const msgs = document.getElementById('chatMessages');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user';
+  userMsg.textContent = msg;
+  msgs.appendChild(userMsg);
+
+  const typing = document.createElement('div');
+  typing.className = 'chat-typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: `You are the AI assistant for Dr. Tafheem's Dental, Skin & Hair Clinic in Goregaon West, Mumbai. Be warm, helpful, and concise. Only answer questions related to the clinic, dental, skin, or hair health. Here are the key facts:
+- Doctor: Dr. Tafheem (female dentist, known for zero-pain approach)
+- Address: Dlh Udaaka Heights, Beside Tata Power Office, Off SV Rd, Ram Mandir Signal, Goregaon West, Mumbai 400104
+- Phone/WhatsApp: 099209 09273
+- Email: drtafheemahmed@gmail.com
+- Hours: Mon-Sat 10am-8pm, Sun by appointment
+- Dental services: Root Canal, Braces, Implants, Veneers, Smile Design, Extractions, Whitening, Crowns, Scaling
+- Skin services: HydraFacial, Carbon Facial, Laser Hair Removal, Tan Removal, Tattoo Removal, PRP, Anti-Acne, Chemical Peels
+- Hair services: Hair Fall Treatment, PRP for Hair, Scalp Treatment, Mesotherapy
+Keep responses under 100 words and conversational.`,
+        messages: [{ role: "user", content: msg }]
+      })
+    });
+
+    typing.remove();
+    const data = await response.json();
+    const botText = data.content?.[0]?.text || getReply(msg);
+
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-msg bot';
+    botMsg.textContent = botText;
+    msgs.appendChild(botMsg);
+  } catch(e) {
+    typing.remove();
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-msg bot';
+    botMsg.textContent = getReply(msg);
+    msgs.appendChild(botMsg);
+  }
+
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function quickAsk(q) {
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+// ===================== NAV SCROLL =====================
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  nav.style.boxShadow = window.scrollY > 50 ? '0 4px 40px rgba(0,0,0,0.3)' : 'none';
+});
+</script>
+</body>
+</html>
